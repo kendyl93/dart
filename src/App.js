@@ -3,15 +3,19 @@ import "./App.css"
 
 import PlayerScore from "./Player/PlayerScore"
 
+const Players = ["Pawel", "Karolina", "Kuba"]
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <h1>Dart</h1>
       </header>
-      <section>
-        <PlayerScore />
-      </section>
+      <main>
+        {Players.map(playerName => (
+          <PlayerScore playerName={playerName} />
+        ))}
+      </main>
     </div>
   )
 }
