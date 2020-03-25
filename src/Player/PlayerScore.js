@@ -13,10 +13,10 @@ const PlayerScoreBoard = styled.div`
 const PlayerScore = ({ playerName }) => {
   const [roundNumber, setRoundNumber] = useState(1)
 
-  const handleNextRound = event => {
+  const handleNextRound = event => roundScore => {
     event.preventDefault()
     event.stopPropagation()
-
+    console.log({ roundScore })
     setRoundNumber(roundNumber + 1)
   }
 
