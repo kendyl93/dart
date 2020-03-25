@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
+import classNames from "classnames"
 
 import DartScoreInput from "./DartScoreInput"
 
@@ -11,6 +12,7 @@ const CurrentRoundScoreBoard = styled.div`
 `
 
 const CurrentRoundScore = ({
+  active,
   roundNumber,
   handleNextRound,
   handleOverallPlayerScore
@@ -48,6 +50,7 @@ const CurrentRoundScore = ({
           handleNextRound(event)(overallRoundScore)
           handleOverallPlayerScore(overallRoundScore)
         }}
+        className={classNames({ active })}
       >
         {Object.entries(DARTS_NUMBERS).map(
           ([dartLabel, { dartScore, onScoreChange }]) => (
@@ -59,7 +62,7 @@ const CurrentRoundScore = ({
             />
           )
         )}
-        <input type="submit" value="End Round" />
+        <input type="submit" value="End Round" disabled={!active} />
       </form>
     </CurrentRoundScoreBoard>
   )

@@ -38,14 +38,18 @@ function App() {
         <h1>Dart</h1>
       </header>
       <main>
-        {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => (
-          <PlayerScore
-            key={playerId}
-            playerName={name}
-            active={playerId === activePlayer}
-            setActivePlayer={handleNextActivePlayer}
-          />
-        ))}
+        {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => {
+          const maybeCurrentPlayerActive = playerId === activePlayer
+
+          return (
+            <PlayerScore
+              key={playerId}
+              playerName={name}
+              active={maybeCurrentPlayerActive}
+              setActivePlayer={handleNextActivePlayer}
+            />
+          )
+        })}
       </main>
     </div>
   )

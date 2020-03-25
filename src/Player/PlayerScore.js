@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 
 import OverallScore from "./Score/OverallScore"
@@ -8,11 +8,20 @@ import CurrentRoundScore from "./Score/CurrentRound/CurrentRoundScore"
 const PlayerScoreBoard = styled.div`
   border: solid 1px gray;
   margin: 8px;
+  flex-grow: 1;
 `
 
 const PlayerScore = ({ active, playerName, setActivePlayer }) => {
   const [roundScores, setRoundScores] = useState([])
   const [overallPlayerScore, setOverallPlayerScore] = useState(501)
+
+  useEffect(() => {
+    if (overallPlayerScore > 0) {
+      return
+    }
+
+    alert(`Player ${playerName} won in ${roundScores.length} rounds!`)
+  }, [overallPlayerScore])
 
   const handleNextRound = event => roundScore => {
     event.preventDefault()
@@ -37,11 +46,14 @@ const PlayerScore = ({ active, playerName, setActivePlayer }) => {
         roundScores.map((roundScore, index) => (
           <RoundScore number={index + 1} score={roundScore} />
         ))}
-      <CurrentRoundScore
-        roundNumber={roundScores.length + 1}
-        handleNextRound={handleNextRound}
-        handleOverallPlayerScore={handleOverallPlayerScore}
-      />
+      {active && (
+        <CurrentRoundScore
+          active={active}
+          roundNumber={roundScores.length + 1}
+          handleNextRound={handleNextRound}
+          handleOverallPlayerScore={handleOverallPlayerScore}
+        />
+      )}
     </PlayerScoreBoard>
   )
 }
