@@ -12,6 +12,7 @@ const PlayerScoreBoard = styled.div`
 
 const PlayerScore = ({ playerName }) => {
   const [roundNumber, setRoundNumber] = useState(1)
+  const [overallPlayerScore, setOverallPlayerScore] = useState(501)
 
   const handleNextRound = event => roundScore => {
     event.preventDefault()
@@ -20,13 +21,17 @@ const PlayerScore = ({ playerName }) => {
     setRoundNumber(roundNumber + 1)
   }
 
+  const handleOverallPlayerScore = roundScore =>
+    setOverallPlayerScore(overallPlayerScore - roundScore)
+
   return (
     <PlayerScoreBoard>
       <h2>{playerName}</h2>
-      <OverallScore />
+      <OverallScore overallPlayerScore={overallPlayerScore} />
       <CurrentRoundScore
         roundNumber={roundNumber}
         handleNextRound={handleNextRound}
+        handleOverallPlayerScore={handleOverallPlayerScore}
       />
     </PlayerScoreBoard>
   )

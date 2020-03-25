@@ -8,7 +8,11 @@ const CurrentRoundScoreBoard = styled.div`
   }
 `
 
-const CurrentRoundScore = ({ roundNumber, handleNextRound }) => {
+const CurrentRoundScore = ({
+  roundNumber,
+  handleNextRound,
+  handleOverallPlayerScore
+}) => {
   const [dart1Score, setDart1Score] = useState(0)
   const [dart2Score, setDart2Score] = useState(0)
   const [dart3Score, setDart3Score] = useState(0)
@@ -37,7 +41,12 @@ const CurrentRoundScore = ({ roundNumber, handleNextRound }) => {
   return (
     <CurrentRoundScoreBoard>
       Round {roundNumber}
-      <form onSubmit={event => handleNextRound(event)(overallRoundScore)}>
+      <form
+        onSubmit={event => {
+          handleNextRound(event)(overallRoundScore)
+          handleOverallPlayerScore(overallRoundScore)
+        }}
+      >
         {Object.entries(DARTS_NUMBERS).map(
           ([dartLabel, { dartScore, onScoreChange }]) => (
             <label key={dartLabel.trim()}>
