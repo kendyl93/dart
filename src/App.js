@@ -3,6 +3,7 @@ import styled from "styled-components"
 import "./App.css"
 
 import PlayerScore from "./Player/PlayerScore"
+import CreateGameView from "./Game/CreateGameView"
 
 const CurrentLegScoreBoard = styled.div`
   display: flex;
@@ -43,6 +44,7 @@ function App() {
       <header className="App-header">
         <h1>Dart</h1>
       </header>
+      <CreateGameView />
       <main>
         <h2>Current Leg</h2>
         <CurrentLegScoreBoard>

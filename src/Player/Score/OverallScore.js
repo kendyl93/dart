@@ -1,6 +1,6 @@
 import React from "react"
 
-const OverallScore = ({ overallPlayerScore = 501 }) => (
+const OverallScore = ({ overallPlayerScore }) => (
   <div>Score {overallPlayerScore}</div>
 )
 
