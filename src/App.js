@@ -1,7 +1,13 @@
 import React, { useState } from "react"
+import styled from "styled-components"
 import "./App.css"
 
 import PlayerScore from "./Player/PlayerScore"
+
+const CurrentLegScoreBoard = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
 
 const DEFAPULT_PLAYERS = {
   player1ID: { name: "Pawel" },
@@ -38,18 +44,21 @@ function App() {
         <h1>Dart</h1>
       </header>
       <main>
-        {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => {
-          const maybeCurrentPlayerActive = playerId === activePlayer
+        <h2>Current Leg</h2>
+        <CurrentLegScoreBoard>
+          {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => {
+            const maybeCurrentPlayerActive = playerId === activePlayer
 
-          return (
-            <PlayerScore
-              key={playerId}
-              playerName={name}
-              active={maybeCurrentPlayerActive}
-              setActivePlayer={handleNextActivePlayer}
-            />
-          )
-        })}
+            return (
+              <PlayerScore
+                key={playerId}
+                playerName={name}
+                active={maybeCurrentPlayerActive}
+                setActivePlayer={handleNextActivePlayer}
+              />
+            )
+          })}
+        </CurrentLegScoreBoard>
       </main>
     </div>
   )

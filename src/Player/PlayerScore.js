@@ -26,7 +26,6 @@ const PlayerScore = ({ active, playerName, setActivePlayer }) => {
   const handleNextRound = event => roundScore => {
     event.preventDefault()
     event.stopPropagation()
-    console.log({ roundScore })
 
     setActivePlayer()
     setRoundScores([...roundScores, roundScore])
