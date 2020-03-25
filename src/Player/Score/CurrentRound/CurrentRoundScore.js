@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
+import DartScoreInput from "./DartScoreInput"
+
 const CurrentRoundScoreBoard = styled.div`
   form {
     display: flex;
@@ -49,14 +51,12 @@ const CurrentRoundScore = ({
       >
         {Object.entries(DARTS_NUMBERS).map(
           ([dartLabel, { dartScore, onScoreChange }]) => (
-            <label key={dartLabel.trim()}>
-              {dartLabel}
-              <input
-                type="number"
-                value={dartScore}
-                onChange={event => handleRoundScoreChange(event)(onScoreChange)}
-              />
-            </label>
+            <DartScoreInput
+              dartLabel={dartLabel}
+              dartScore={dartScore}
+              onScoreChange={onScoreChange}
+              handleRoundScoreChange={handleRoundScoreChange}
+            />
           )
         )}
         <input type="submit" value="End Round" />

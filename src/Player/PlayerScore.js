@@ -3,14 +3,14 @@ import styled from "styled-components"
 
 import OverallScore from "./Score/OverallScore"
 import RoundScore from "./Score/RoundScore"
-import CurrentRoundScore from "./Score/CurrentRoundScore"
+import CurrentRoundScore from "./Score/CurrentRound/CurrentRoundScore"
 
 const PlayerScoreBoard = styled.div`
   border: solid 1px gray;
   margin: 8px;
 `
 
-const PlayerScore = ({ playerName }) => {
+const PlayerScore = ({ active, playerName, setActivePlayer }) => {
   const [roundScores, setRoundScores] = useState([])
   const [overallPlayerScore, setOverallPlayerScore] = useState(501)
 
@@ -19,6 +19,7 @@ const PlayerScore = ({ playerName }) => {
     event.stopPropagation()
     console.log({ roundScore })
 
+    setActivePlayer()
     setRoundScores([...roundScores, roundScore])
   }
 
@@ -27,7 +28,10 @@ const PlayerScore = ({ playerName }) => {
 
   return (
     <PlayerScoreBoard>
-      <h2>{playerName}</h2>
+      <h2>
+        {active && <div>&#8226;</div>}
+        {playerName}
+      </h2>
       <OverallScore overallPlayerScore={overallPlayerScore} />
       {roundScores.length > 0 &&
         roundScores.map((roundScore, index) => (
