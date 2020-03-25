@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 const CurrentRoundScoreBoard = styled.div`
@@ -8,16 +8,31 @@ const CurrentRoundScoreBoard = styled.div`
   }
 `
 
-const CurrentRoundScore = ({ roundNumber, handleNextRound }) => (
-  <CurrentRoundScoreBoard>
-    Round {roundNumber}
-    <form onSubmit={handleNextRound}>
-      <input type="number" value={19} onChange={() => {}} />
-      <input type="number" value={10} onChange={() => {}} />
-      <input type="number" value={60} onChange={() => {}} />
-      <input type="submit" value="Next player" />
-    </form>
-  </CurrentRoundScoreBoard>
-)
+const DARTS_NUMBERS = { "Dart 1": 1, "Dart 2": 2, "Dart 3": 3 }
+
+const CurrentRoundScore = ({ roundNumber, handleNextRound }) => {
+  const [roundScore, setRoundScore] = useState([])
+
+  const handleRoundScoreChange = () => {}
+
+  return (
+    <CurrentRoundScoreBoard>
+      Round {roundNumber}
+      <form onSubmit={handleNextRound}>
+        {Object.entries(DARTS_NUMBERS).map(([dartLabel, dartNumber]) => (
+          <label>
+            {dartLabel}
+            <input
+              type="number"
+              value={roundScore[dartNumber - 1]}
+              onChange={() => handleRoundScoreChange(dartNumber - 1)}
+            />
+          </label>
+        ))}
+        <input type="submit" value="Next player" />
+      </form>
+    </CurrentRoundScoreBoard>
+  )
+}
 
 export default CurrentRoundScore
