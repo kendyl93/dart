@@ -1,5 +1,9 @@
 import React from "react"
 
-const RoundScore = () => <div>Round 3 ----- 45</div>
+const RoundScore = ({ number, score }) => (
+  <h4>
+    Round {number} - {score}
+  </h4>
+)
 
 export default RoundScore
