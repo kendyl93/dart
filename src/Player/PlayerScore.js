@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 
 import OverallScore from "./Score/OverallScore"
@@ -10,14 +10,26 @@ const PlayerScoreBoard = styled.div`
   margin: 8px;
 `
 
-const PlayerScore = ({ playerName }) => (
-  <PlayerScoreBoard>
-    <h2>{playerName}</h2>
-    <OverallScore />
-    <RoundScore />
-    <RoundScore />
-    <CurrentRoundScore />
-  </PlayerScoreBoard>
-)
+const PlayerScore = ({ playerName }) => {
+  const [roundNumber, setRoundNumber] = useState(1)
+
+  const handleNextRound = event => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setRoundNumber(roundNumber + 1)
+  }
+
+  return (
+    <PlayerScoreBoard>
+      <h2>{playerName}</h2>
+      <OverallScore />
+      <CurrentRoundScore
+        roundNumber={roundNumber}
+        handleNextRound={handleNextRound}
+      />
+    </PlayerScoreBoard>
+  )
+}
 
 export default PlayerScore

@@ -8,10 +8,10 @@ const CurrentRoundScoreBoard = styled.div`
   }
 `
 
-const CurrentRoundScore = () => (
+const CurrentRoundScore = ({ roundNumber, handleNextRound }) => (
   <CurrentRoundScoreBoard>
-    Round 5
-    <form>
+    Round {roundNumber}
+    <form onSubmit={handleNextRound}>
       <input type="number" value={19} onChange={() => {}} />
       <input type="number" value={10} onChange={() => {}} />
       <input type="number" value={60} onChange={() => {}} />
