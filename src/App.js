@@ -1,67 +1,58 @@
 import React, { useState } from "react"
-import styled from "styled-components"
+
 import "./App.css"
 
-import PlayerScore from "./Player/PlayerScore"
-import CreateGameView from "./Game/CreateGameView"
+const App = () => {
+  const [playerInputs, setPlayerInput] = useState([{ value: "" }])
 
-const CurrentLegScoreBoard = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
+  const handleChangePlayerInput = (idx, event) => {
+    const values = [...playerInputs]
+    values[idx].value = event.target.value
 
-const DEFAPULT_PLAYERS = {
-  player1ID: { name: "Pawel" },
-  player2ID: { name: "Karolina" },
-  player3ID: { name: "Kuba" }
-}
+    setPlayerInput(values)
+  }
 
-const indexOfNextActivePlayer = (playersId, currentActivePlayerId) =>
-  playersId.indexOf(currentActivePlayerId) + 1
+  const addPlayerInput = () => {
+    const values = [...playerInputs]
+    values.push({ value: null })
+    setPlayerInput(values)
+  }
 
-function App() {
-  const playersId = Object.keys(DEFAPULT_PLAYERS)
-  const [firstPlayer] = playersId
-  const [activePlayer, setActivePlayer] = useState(firstPlayer)
-  const playersCount = playersId.length
+  const removePlayerInput = idx => {
+    const values = [...playerInputs]
+    values.splice(idx, 1)
 
-  const handleNextActivePlayer = () => {
-    const nextActivePlayerIndex = indexOfNextActivePlayer(
-      playersId,
-      activePlayer
-    )
-    const currentPlayerMaybeLast = nextActivePlayerIndex === playersCount
-
-    if (currentPlayerMaybeLast) {
-      return setActivePlayer(firstPlayer)
-    }
-
-    setActivePlayer(playersId[nextActivePlayerIndex])
+    setPlayerInput(values)
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Dart</h1>
+        <h1>Create game</h1>
       </header>
-      <CreateGameView />
-      <main>
-        <h2>Current Leg</h2>
-        <CurrentLegScoreBoard>
-          {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => {
-            const maybeCurrentPlayerActive = playerId === activePlayer
+      <h3>Type players names:</h3>
+      <form>
+        {playerInputs.map(({ value }, idx) => {
+          const playersCount = idx + 1
 
-            return (
-              <PlayerScore
-                key={playerId}
-                playerName={name}
-                active={maybeCurrentPlayerActive}
-                setActivePlayer={handleNextActivePlayer}
+          return (
+            <div key={`player-${playersCount}`}>
+              {`${playersCount}`}.
+              <input
+                value={value}
+                type="text"
+                onChange={event => handleChangePlayerInput(idx, event)}
               />
-            )
-          })}
-        </CurrentLegScoreBoard>
-      </main>
+              <button type="button" onClick={() => removePlayerInput(idx)}>
+                X
+              </button>
+            </div>
+          )
+        })}
+        <button type="button" onClick={addPlayerInput}>
+          +
+        </button>
+      </form>
     </div>
   )
 }
