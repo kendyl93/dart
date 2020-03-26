@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
+import uniqid from "uniqid"
 
 import OverallScore from "./Score/OverallScore"
 import RoundScore from "./Score/RoundScore"
@@ -42,9 +43,17 @@ const PlayerScore = ({ active, playerName, setActivePlayer }) => {
       </h2>
       <OverallScore overallPlayerScore={overallPlayerScore} />
       {roundScores.length > 0 &&
-        roundScores.map((roundScore, index) => (
-          <RoundScore number={index + 1} score={roundScore} />
-        ))}
+        roundScores.map((roundScore, index) => {
+          const roundScoreKey = `soundScore-${uniqid()}`
+
+          return (
+            <RoundScore
+              key={roundScoreKey}
+              number={index + 1}
+              score={roundScore}
+            />
+          )
+        })}
       {active && (
         <CurrentRoundScore
           active={active}

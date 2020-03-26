@@ -1,7 +1,7 @@
 import { START_GAME, GET_PLAYERS } from "./gameAction"
 
 const initialState = {
-  players: {}
+  players: []
 }
 
 export const gameReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ export const gameReducer = (state = initialState, action) => {
     case GET_PLAYERS:
       return {
         ...state,
-        players: state.players
+        players: action.players
       }
     default:
       return state

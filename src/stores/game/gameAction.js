@@ -8,8 +8,9 @@ export const startGame = players => {
   }
 }
 
-export const getCreatedPlayers = () => {
+export const getCreatedPlayers = players => {
   return {
-    type: GET_PLAYERS
+    type: GET_PLAYERS,
+    players
   }
 }

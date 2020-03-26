@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
 import { useHistory } from "react-router-dom"
 import uniqid from "uniqid"
 import { bindActionCreators } from "redux"
@@ -57,15 +57,21 @@ const CreateGameView = ({ actions: { createGame } }) => {
     <div>
       <h3>Type players names:</h3>
       <form onSubmit={onSubmitForm}>
-        {playerInputs.map(({ value, id }, index) => (
-          <PlayerInput
-            id={id}
-            value={value}
-            index={index}
-            handleChangePlayerInput={handleChangePlayerInput}
-            removePlayerInput={removePlayerInput}
-          />
-        ))}
+        {playerInputs.map(({ value, id }, index) => {
+          const playerInputKey = `playerInput-${id}`
+
+          return (
+            <Fragment key={playerInputKey}>
+              <PlayerInput
+                id={id}
+                value={value}
+                index={index}
+                handleChangePlayerInput={handleChangePlayerInput}
+                removePlayerInput={removePlayerInput}
+              />
+            </Fragment>
+          )
+        })}
         <IncrementButton onIncrement={addPlayerInput} />
         <input type="submit" value="START" />
       </form>

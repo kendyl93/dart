@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import styled from "styled-components"
@@ -8,6 +8,7 @@ import { getPlayers } from "../stores/game/gameReducer"
 import { fetchPlayers } from "../stores/game/gameEffect"
 
 import { getPlayersIds } from "../utils/players"
+import { any, none } from "../utils/array"
 
 const CurrentLegScoreBoard = styled.div`
   display: flex;
@@ -18,14 +19,21 @@ const indexOfNextActivePlayer = (playersId, currentActivePlayerId) =>
   playersId.indexOf(currentActivePlayerId) + 1
 
 const GameView = ({ action: { fetchPlayers }, players }) => {
-  const [{ id: firstPlayerId }] = players
+  const [{ id: firstPlayerId = null } = {}] = players
   const [activePlayer, setActivePlayer] = useState(firstPlayerId)
   const playersIds = getPlayersIds(players)
   const playersCount = playersIds.length
+  const nonePlayers = none(players)
+  const anyPlayer = any(players)
 
   useEffect(() => {
-    fetchPlayers()
-  })
+    if (nonePlayers) {
+      fetchPlayers()
+    }
+    const [{ id: firstPlayerId = "" } = {}] = players
+
+    setActivePlayer(firstPlayerId)
+  }, [fetchPlayers, players])
 
   const handleNextActivePlayer = () => {
     const nextActivePlayerIndex = indexOfNextActivePlayer(
@@ -49,18 +57,21 @@ const GameView = ({ action: { fetchPlayers }, players }) => {
       <main>
         <h2>Current Leg</h2>
         <CurrentLegScoreBoard>
-          {players.map(({ name, id }) => {
-            const maybeCurrentPlayerActive = id === activePlayer
+          {anyPlayer &&
+            players.map(({ name, id }) => {
+              const maybeCurrentPlayerActive = id === activePlayer
+              const playerScoreKey = `playerScore-${id}`
 
-            return (
-              <PlayerScore
-                key={id}
-                playerName={name}
-                active={maybeCurrentPlayerActive}
-                setActivePlayer={handleNextActivePlayer}
-              />
-            )
-          })}
+              return (
+                <Fragment key={playerScoreKey}>
+                  <PlayerScore
+                    playerName={name}
+                    active={maybeCurrentPlayerActive}
+                    setActivePlayer={handleNextActivePlayer}
+                  />
+                </Fragment>
+              )
+            })}
         </CurrentLegScoreBoard>
       </main>
     </div>
