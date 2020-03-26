@@ -6,8 +6,18 @@ import { connect } from "react-redux"
 import { createGame } from "../stores/game/gameEffect"
 import { getPlayers } from "../stores/game/gameReducer"
 
+import IncrementButton from "../UI/IncrementButton"
+import PlayerInput from "./PlayerInput"
+
+const DEFAULT_PLAYER_INPUT = id => ({
+  value: "",
+  id
+})
+
 const CreateGameView = ({ actions: { createGame } }) => {
-  const [playerInputs, setPlayerInput] = useState([{ value: "", id: uniqid() }])
+  const [playerInputs, setPlayerInput] = useState([
+    DEFAULT_PLAYER_INPUT(uniqid())
+  ])
 
   const handleChangePlayerInput = (index, event) => {
     const values = [...playerInputs]
@@ -17,8 +27,8 @@ const CreateGameView = ({ actions: { createGame } }) => {
   }
 
   const addPlayerInput = () => {
-    const values = [...playerInputs]
-    values.push({ value: null, id: uniqid() })
+    const values = [...playerInputs, DEFAULT_PLAYER_INPUT(uniqid())]
+
     setPlayerInput(values)
   }
 
@@ -29,43 +39,27 @@ const CreateGameView = ({ actions: { createGame } }) => {
     setPlayerInput(values)
   }
 
-  const handleStartGame = players => {
-    createGame(players)
+  const onSubmitForm = event => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    createGame(playerInputs)
   }
 
   return (
     <div>
-      <header className="App-header">
-        <h1>Create game</h1>
-      </header>
       <h3>Type players names:</h3>
-      <form
-        onSubmit={event => {
-          event.preventDefault()
-          event.stopPropagation()
-          handleStartGame(playerInputs)
-        }}
-      >
-        {playerInputs.map(({ value, id }, index) => {
-          const playersCount = index + 1
-
-          return (
-            <div key={`player-${id}`}>
-              {`${playersCount}`}.
-              <input
-                value={value}
-                type="text"
-                onChange={event => handleChangePlayerInput(index, event)}
-              />
-              <button type="button" onClick={() => removePlayerInput(index)}>
-                X
-              </button>
-            </div>
-          )
-        })}
-        <button type="button" onClick={addPlayerInput}>
-          +
-        </button>
+      <form onSubmit={onSubmitForm}>
+        {playerInputs.map(({ value, id }, index) => (
+          <PlayerInput
+            id={id}
+            value={value}
+            index={index}
+            handleChangePlayerInput={handleChangePlayerInput}
+            removePlayerInput={removePlayerInput}
+          />
+        ))}
+        <IncrementButton onIncrement={addPlayerInput} />
         <input type="submit" value="START" />
       </form>
     </div>
