@@ -1,41 +1,43 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { bindActionCreators } from "redux"
+import { connect } from "react-redux"
 import styled from "styled-components"
 
 import PlayerScore from "../Player/PlayerScore"
-import CreateGameView from "./CreateGameView"
+import { getPlayers } from "../stores/game/gameReducer"
+import { fetchPlayers } from "../stores/game/gameEffect"
 
 const CurrentLegScoreBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
 
-const DEFAPULT_PLAYERS = {
-  player1ID: { name: "Pawel" },
-  player2ID: { name: "Karolina" },
-  player3ID: { name: "Kuba" }
+const indexOfNextActivePlayer = (playersId, currentActivePlayerId) => {
+  return playersId.indexOf(currentActivePlayerId) + 1
 }
 
-const indexOfNextActivePlayer = (playersId, currentActivePlayerId) =>
-  playersId.indexOf(currentActivePlayerId) + 1
+const GameView = ({ action: { fetchPlayers }, players }) => {
+  const [firstPlayer] = players
+  const [activePlayer, setActivePlayer] = useState(firstPlayer.id)
+  const playersIds = players.map(({ id }) => id)
+  const playersCount = playersIds.length
 
-const GameView = () => {
-  const playersId = Object.keys(DEFAPULT_PLAYERS)
-  const [firstPlayer] = playersId
-  const [activePlayer, setActivePlayer] = useState(firstPlayer)
-  const playersCount = playersId.length
+  useEffect(() => {
+    fetchPlayers()
+  })
 
   const handleNextActivePlayer = () => {
     const nextActivePlayerIndex = indexOfNextActivePlayer(
-      playersId,
+      playersIds,
       activePlayer
     )
     const currentPlayerMaybeLast = nextActivePlayerIndex === playersCount
 
     if (currentPlayerMaybeLast) {
-      return setActivePlayer(firstPlayer)
+      return setActivePlayer(firstPlayer.id)
     }
 
-    setActivePlayer(playersId[nextActivePlayerIndex])
+    setActivePlayer(playersIds[nextActivePlayerIndex])
   }
 
   return (
@@ -46,12 +48,12 @@ const GameView = () => {
       <main>
         <h2>Current Leg</h2>
         <CurrentLegScoreBoard>
-          {Object.entries(DEFAPULT_PLAYERS).map(([playerId, { name }]) => {
-            const maybeCurrentPlayerActive = playerId === activePlayer
+          {players.map(({ name, id }) => {
+            const maybeCurrentPlayerActive = id === activePlayer
 
             return (
               <PlayerScore
-                key={playerId}
+                key={id}
                 playerName={name}
                 active={maybeCurrentPlayerActive}
                 setActivePlayer={handleNextActivePlayer}
@@ -64,4 +66,10 @@ const GameView = () => {
   )
 }
 
-export default GameView
+const mapStateToProps = ({ gameData }) => ({ players: getPlayers(gameData) })
+
+const mapDispatchToProps = dispatch => ({
+  action: bindActionCreators({ fetchPlayers }, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameView)

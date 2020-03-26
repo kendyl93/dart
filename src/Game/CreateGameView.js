@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useHistory } from "react-router-dom"
 import uniqid from "uniqid"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
@@ -18,6 +19,7 @@ const CreateGameView = ({ actions: { createGame } }) => {
   const [playerInputs, setPlayerInput] = useState([
     DEFAULT_PLAYER_INPUT(uniqid())
   ])
+  const history = useHistory()
 
   const handleChangePlayerInput = (index, event) => {
     const values = [...playerInputs]
@@ -43,9 +45,12 @@ const CreateGameView = ({ actions: { createGame } }) => {
     event.preventDefault()
     event.stopPropagation()
 
-    createGame(playerInputs)
+    const tranformPlayerInputs = players =>
+      players.map(({ value, id }) => ({ name: value, id }))
 
-    window.location.replace("/game")
+    createGame(tranformPlayerInputs(playerInputs))
+
+    history.push("/game")
   }
 
   return (
