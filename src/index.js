@@ -1,11 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
 import logger from "redux-logger"
 
 import "./index.css"
 import App from "./App"
+import GameView from "./Game/GameView"
 import * as serviceWorker from "./serviceWorker"
 import rootReducer from "./stores/rootReducer"
 
@@ -14,7 +16,16 @@ const store = createStore(rootReducer, applyMiddleware(logger))
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <App />
+          </Route>
+          <Route path="/game">
+            <GameView />
+          </Route>
+        </Switch>
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

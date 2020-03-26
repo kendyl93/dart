@@ -44,6 +44,8 @@ const CreateGameView = ({ actions: { createGame } }) => {
     event.stopPropagation()
 
     createGame(playerInputs)
+
+    window.location.replace("/game")
   }
 
   return (

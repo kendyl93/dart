@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
-import PlayerScore from "./Player/PlayerScore"
-import CreateGameView from "./Game/CreateGameView"
+import PlayerScore from "../Player/PlayerScore"
+import CreateGameView from "./CreateGameView"
 
 const CurrentLegScoreBoard = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const DEFAPULT_PLAYERS = {
 const indexOfNextActivePlayer = (playersId, currentActivePlayerId) =>
   playersId.indexOf(currentActivePlayerId) + 1
 
-const Game = () => {
+const GameView = () => {
   const playersId = Object.keys(DEFAPULT_PLAYERS)
   const [firstPlayer] = playersId
   const [activePlayer, setActivePlayer] = useState(firstPlayer)
@@ -43,7 +43,6 @@ const Game = () => {
       <header className="App-header">
         <h1>Dart</h1>
       </header>
-      <CreateGameView />
       <main>
         <h2>Current Leg</h2>
         <CurrentLegScoreBoard>
@@ -65,4 +64,4 @@ const Game = () => {
   )
 }
 
-export default Game
+export default GameView
