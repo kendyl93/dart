@@ -7,19 +7,20 @@ import PlayerScore from "../Player/PlayerScore"
 import { getPlayers } from "../stores/game/gameReducer"
 import { fetchPlayers } from "../stores/game/gameEffect"
 
+import { getPlayersIds } from "../utils/players"
+
 const CurrentLegScoreBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
 
-const indexOfNextActivePlayer = (playersId, currentActivePlayerId) => {
-  return playersId.indexOf(currentActivePlayerId) + 1
-}
+const indexOfNextActivePlayer = (playersId, currentActivePlayerId) =>
+  playersId.indexOf(currentActivePlayerId) + 1
 
 const GameView = ({ action: { fetchPlayers }, players }) => {
-  const [firstPlayer] = players
-  const [activePlayer, setActivePlayer] = useState(firstPlayer.id)
-  const playersIds = players.map(({ id }) => id)
+  const [{ id: firstPlayerId }] = players
+  const [activePlayer, setActivePlayer] = useState(firstPlayerId)
+  const playersIds = getPlayersIds(players)
   const playersCount = playersIds.length
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const GameView = ({ action: { fetchPlayers }, players }) => {
     const currentPlayerMaybeLast = nextActivePlayerIndex === playersCount
 
     if (currentPlayerMaybeLast) {
-      return setActivePlayer(firstPlayer.id)
+      return setActivePlayer(firstPlayerId)
     }
 
     setActivePlayer(playersIds[nextActivePlayerIndex])
