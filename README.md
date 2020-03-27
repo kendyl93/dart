@@ -1,2 +1,3 @@
 # darts-scoreboard
-React-redux app for keeping score in dart games.
+
+Scoreboard to make calculations easier during quarantine
